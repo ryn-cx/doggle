@@ -16,6 +16,7 @@ function toggleFold(unfold: boolean) {
 		// Go through each line
 		for (let lineIndex = 0; lineIndex < document.lineCount; lineIndex++) {
 			if (lineIsComment(document, lineIndex)) {
+				console.log(lineIndex)
 				lines.push(lineIndex)
 			}
 		}
@@ -35,7 +36,7 @@ function lineIsComment(document: vscode.TextDocument, lineIndex: number) {
 	// If in the future more languages are supported, this will make it easier to add them
 	if (document.languageId === 'python') {
 		// If the first non white space character is """ assume the line is a docstring
-		const currentLineGood = document.lineAt(lineIndex).text.trim().startsWith('"""');
+		const currentLineGood = document.lineAt(lineIndex).text.trim().startsWith('"""') && !document.lineAt(lineIndex).text.trim().endsWith('"""');
 		// If there is no previous line or there is a previous line that ends with a colon the previous line is good
 		const prevLineGood = lineIndex === 0 ? true : document.lineAt(lineIndex - 1).text.trim().endsWith(':');
 		return currentLineGood && prevLineGood;
